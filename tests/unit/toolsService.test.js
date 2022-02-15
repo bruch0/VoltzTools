@@ -4,8 +4,8 @@ import * as toolsRepository from '../../src/repositories/toolsRepository.js';
 import * as toolsService from '../../src/services/toolsService.js';
 import InexistentTool from '../../src/errors/inexistentTool.js';
 
-describe('genre Service get genres', () => {
-  it('should throw an error when no genres are found', async () => {
+describe('toolService - get tool by id', () => {
+  it('should throw an error when the id is not found', async () => {
     const id = faker.datatype.number();
     jest.spyOn(toolsRepository, 'getToolById').mockImplementationOnce(() => []);
 
@@ -14,7 +14,7 @@ describe('genre Service get genres', () => {
     await expect(promise).rejects.toThrow(InexistentTool);
   });
 
-  it('should return an array the genre is found', async () => {
+  it('should return an array the id is found', async () => {
     const id = faker.datatype.number();
     jest
       .spyOn(toolsRepository, 'getToolById')
