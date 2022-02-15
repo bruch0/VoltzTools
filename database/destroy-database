@@ -9,3 +9,11 @@ checkPostgres &&
 
 echo "Destruindo banco de dados..." &&
 destroyDatabase $DATABASE;
+
+DATABASE=$(cat src/database_test);
+
+echo "Checando status do postgres..." &&
+checkPostgres &&
+
+echo "Destruindo banco de dados..." &&
+destroyDatabase $DATABASE;

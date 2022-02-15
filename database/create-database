@@ -12,3 +12,14 @@ createDatabase $DATABASE &&
 
 echo "Executando scripts..." &&
 runScripts $DATABASE;
+
+DATABASE=$(cat src/database_test);
+
+echo "Checando status do postgres..." &&
+checkPostgres &&
+
+echo "Criando banco de dados..." &&
+createDatabase $DATABASE &&
+
+echo "Executando scripts..." &&
+runScripts $DATABASE;
