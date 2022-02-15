@@ -6,6 +6,8 @@ Group of all tools-related resources.
 
 ## All Tools [/tools]
 
+### Retrieve a Tool [GET]
+
 - Response 200 (application/json)
 
 ```js
@@ -54,8 +56,6 @@ Group of all tools-related resources.
   ]
 ```
 
-<br>
-
 ## One Tool [/tools/{id}]
 
 - Parameters
@@ -92,3 +92,7 @@ Group of all tools-related resources.
   - Body
 
           Essa ferramenta não existe
+
+# Group User
+
+Group of all user-related resources.
