@@ -17,4 +17,4 @@ const checkEmailAvailability = async ({ email }) => {
   return Boolean(!user.rows.length);
 };
 
-export { newUser };
+export { newUser, checkEmailAvailability };
