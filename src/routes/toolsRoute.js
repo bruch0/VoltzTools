@@ -6,6 +6,7 @@ const router = new Router();
 
 router.group('/tools', (route) => {
   route.get('', toolsController.getAllTools);
+  route.get('/:id', toolsController.getToolById);
 });
 
 export default router;
