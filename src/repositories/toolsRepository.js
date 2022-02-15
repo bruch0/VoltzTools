@@ -8,4 +8,13 @@ const getAllTools = async () => {
   return tools.rows;
 };
 
-export { getAllTools };
+const getToolById = async ({ id }) => {
+  const tool = await connection.query(
+    'SELECT * FROM tools JOIN tool_tags ON tools.id = tool_tags.tool_id WHERE tools.id = $1',
+    [id]
+  );
+
+  return tool.rows;
+};
+
+export { getAllTools, getToolById };
