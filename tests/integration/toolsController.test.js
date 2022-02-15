@@ -1,5 +1,6 @@
-import '../../src/setup.js';
 import supertest from 'supertest';
+
+import '../../src/setup.js';
 import app from '../../src/app.js';
 
 import { createTool } from '../factories/toolFactory.js';
