@@ -11,9 +11,11 @@ const getAllTools = async (req, res, next) => {
 };
 
 const getToolById = async (req, res, next) => {
-  const { id } = req.params;
-
   try {
+    const { id } = req.params;
+
+    if (isNaN(id)) return res.status(400).send('Insira um id válido');
+
     const tool = await toolsService.getToolById({ id });
 
     return res.send(tool);
