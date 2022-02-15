@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 
 import toolsRoute from './routes/toolsRoute.js';
+import userRoute from './routes/userRoute.js';
 import databaseError from './middlewares/databaseError.js';
 import inexistentRoute from './routes/inexistentRoute.js';
 
@@ -10,6 +11,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use(toolsRoute);
+app.use(userRoute);
 
 app.use(inexistentRoute);
 
