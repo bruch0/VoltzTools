@@ -33,13 +33,15 @@ describe('POST /user/register', () => {
   it('should return status 409 when email is already taken', async () => {
     await clearUsers();
 
+    const { name, email, password } = await createUser();
+
     const body = {
-      name: faker.name.findName(),
-      email: faker.internet.email(),
-      password: faker.internet.password(),
+      name,
+      email,
+      password,
     };
 
-    await request.post('/user/register').send(body);
+    console.log(body);
 
     const result = await request.post('/user/register').send(body);
 
