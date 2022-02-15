@@ -41,8 +41,6 @@ describe('POST /user/register', () => {
       password,
     };
 
-    console.log(body);
-
     const result = await request.post('/user/register').send(body);
 
     expect(result.status).toEqual(409);
