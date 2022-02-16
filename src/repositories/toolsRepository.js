@@ -38,8 +38,6 @@ const getToolById = async ({ id }) => {
 
   tags.rows.forEach((tagObj) => tool.rows[0].tags.push(tagObj.tag));
 
-  console.log(tool.rows);
-
   return tool.rows;
 };
 
