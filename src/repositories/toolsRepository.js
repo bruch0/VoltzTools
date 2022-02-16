@@ -25,15 +25,15 @@ const getAllTools = async () => {
   return tools.rows;
 };
 
-const getToolById = async ({ id }) => {
+const getToolById = async ({ toolId }) => {
   const tool = await connection.query('SELECT * FROM tools WHERE id = $1', [
-    id,
+    toolId,
   ]);
   tool.rows[0].tags = [];
 
   const tags = await connection.query(
     'SELECT * FROM tool_tags WHERE tool_id = $1',
-    [id]
+    [toolId]
   );
 
   tags.rows.forEach((tagObj) => tool.rows[0].tags.push(tagObj.tag));
@@ -72,4 +72,8 @@ const createTool = async ({ title, link, description, tags }) => {
   return toolId;
 };
 
-export { getAllTools, getToolById, createTool };
+const deleteTool = async ({ toolId }) => {
+  await connection.query('DELETE FROM tools WHERE id = $1', [toolId]);
+};
+
+export { getAllTools, getToolById, createTool, deleteTool };
