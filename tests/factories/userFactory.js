@@ -12,9 +12,9 @@ const createUser = async () => {
     [faker.name.findName(), faker.internet.email(), hashPassword]
   );
 
-  const { name, email } = user.rows[0];
+  const { id, name, email } = user.rows[0];
 
-  return { name, email, password };
+  return { userId: id, name, email, password };
 };
 
 export { createUser };
