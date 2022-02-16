@@ -27,4 +27,23 @@ const getToolById = async (req, res, next) => {
   }
 };
 
-export { getAllTools, getToolById };
+const createTool = async (req, res, next) => {
+  try {
+    const { title, link, description, tags } = req.body;
+    const { userId } = req.locals;
+
+    if (!title || !link || !description || !tags || !Array.isArray(tags))
+      return res.status(400).send('Insira um corpo válido');
+
+    await toolsService.createTool({ title, link, description, tags });
+
+    return res.status(201).send({ title, link, description, tags });
+  } catch (error) {
+    if (error.name === 'bodyValidation')
+      return res.status(400).send(error.message);
+
+    next(error);
+  }
+};
+
+export { getAllTools, getToolById, createTool };
