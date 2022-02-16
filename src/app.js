@@ -3,6 +3,7 @@ import cors from 'cors';
 
 import toolsRoute from './routes/toolsRoute.js';
 import userRoute from './routes/userRoute.js';
+
 import databaseError from './middlewares/databaseError.js';
 import inexistentRoute from './routes/inexistentRoute.js';
 
