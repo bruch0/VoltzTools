@@ -13,7 +13,7 @@ router.group('/tools', (route) => {
 
   route.use(authJwt);
   route.post('', toolsController.createTool);
-  route.delete('', toolsController.deleteTool);
+  route.delete('/:toolId', toolsController.deleteTool);
 });
 
 export default router;
