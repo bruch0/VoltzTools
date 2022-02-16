@@ -6,6 +6,7 @@ const router = new Router();
 
 router.group('/user', (route) => {
   route.post('/register', userController.newUser);
+  route.post('/login', userController.login);
 });
 
 export default router;
