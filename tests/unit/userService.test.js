@@ -3,7 +3,7 @@ import * as bcrypt from 'bcrypt';
 
 import * as userRepository from '../../src/repositories/userRepository.js';
 import * as userService from '../../src/services/userService.js';
-import bodyValidation from '../../src/errors/bodyValidation.js';
+import BodyValidation from '../../src/errors/bodyValidation.js';
 import EmailAlreadyTaken from '../../src/errors/emailAlreadyTaken.js';
 
 describe('userService - joi validations', () => {
@@ -13,7 +13,7 @@ describe('userService - joi validations', () => {
   it('should throw an error when empty body is sent', async () => {
     const promise = userService.newUser({});
 
-    await expect(promise).rejects.toThrow(bodyValidation);
+    await expect(promise).rejects.toThrow(BodyValidation);
   });
 
   it('should throw an error when body has no name property', async () => {
@@ -24,7 +24,7 @@ describe('userService - joi validations', () => {
 
     const promise = userService.newUser(body);
 
-    await expect(promise).rejects.toThrow(bodyValidation);
+    await expect(promise).rejects.toThrow(BodyValidation);
   });
 
   it('should throw an error when body has no email property', async () => {
@@ -35,7 +35,7 @@ describe('userService - joi validations', () => {
 
     const promise = userService.newUser(body);
 
-    await expect(promise).rejects.toThrow(bodyValidation);
+    await expect(promise).rejects.toThrow(BodyValidation);
   });
 
   it('should throw an error when body has no password property', async () => {
@@ -46,7 +46,7 @@ describe('userService - joi validations', () => {
 
     const promise = userService.newUser(body);
 
-    await expect(promise).rejects.toThrow(bodyValidation);
+    await expect(promise).rejects.toThrow(BodyValidation);
   });
 
   it('should throw an error when name property has less than 3 characters', async () => {
@@ -58,7 +58,7 @@ describe('userService - joi validations', () => {
 
     const promise = userService.newUser(body);
 
-    await expect(promise).rejects.toThrow(bodyValidation);
+    await expect(promise).rejects.toThrow(BodyValidation);
   });
 
   it('should throw an error when name property has more than 30 characters', async () => {
@@ -70,7 +70,7 @@ describe('userService - joi validations', () => {
 
     const promise = userService.newUser(body);
 
-    await expect(promise).rejects.toThrow(bodyValidation);
+    await expect(promise).rejects.toThrow(BodyValidation);
   });
 
   it('should throw an error when email property is not a valid email', async () => {
@@ -82,7 +82,7 @@ describe('userService - joi validations', () => {
 
     const promise = userService.newUser(body);
 
-    await expect(promise).rejects.toThrow(bodyValidation);
+    await expect(promise).rejects.toThrow(BodyValidation);
   });
 
   it('should throw an error when password property has less than 8 characters', async () => {
@@ -94,7 +94,7 @@ describe('userService - joi validations', () => {
 
     const promise = userService.newUser(body);
 
-    await expect(promise).rejects.toThrow(bodyValidation);
+    await expect(promise).rejects.toThrow(BodyValidation);
   });
 
   it('should throw an error when password property has more than 50 characters', async () => {
@@ -106,6 +106,43 @@ describe('userService - joi validations', () => {
 
     const promise = userService.newUser(body);
 
-    await expect(promise).rejects.toThrow(bodyValidation);
+    await expect(promise).rejects.toThrow(BodyValidation);
+  });
+});
+
+describe('userService - joi validations', () => {
+  jest.spyOn(userRepository, 'newUser').mockImplementation(() => true);
+  jest.spyOn(bcrypt, 'hashSync').mockImplementation(() => 'hashedPassword');
+
+  it('should throw an error when email is already taken', async () => {
+    jest
+      .spyOn(userRepository, 'checkEmailAvailability')
+      .mockImplementation(() => false);
+
+    const body = {
+      name: faker.name.findName(),
+      email: faker.internet.email(),
+      password: faker.internet.password(),
+    };
+
+    const promise = userService.newUser(body);
+
+    await expect(promise).rejects.toThrow(EmailAlreadyTaken);
+  });
+
+  it('should throw nothing when the email is available', async () => {
+    jest
+      .spyOn(userRepository, 'checkEmailAvailability')
+      .mockImplementation(() => true);
+
+    const body = {
+      name: faker.name.findName(),
+      email: faker.internet.email(),
+      password: faker.internet.password(),
+    };
+
+    const promise = await userService.newUser(body);
+
+    await expect(promise).toBe(undefined);
   });
 });
