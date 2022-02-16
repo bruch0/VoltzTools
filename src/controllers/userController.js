@@ -29,7 +29,7 @@ const login = async (req, res, next) => {
 
     const token = await userService.login({ email, password });
 
-    return res.send(token);
+    return res.send({ token });
   } catch (error) {
     if (error.name === 'bodyValidation')
       return res.status(400).send(error.message);
