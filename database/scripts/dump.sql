@@ -20,7 +20,7 @@ CREATE TABLE "tool_tags" (
 CREATE TABLE "users" (
 	"id" serial NOT NULL,
 	"name" varchar(255) NOT NULL,
-	"email" varchar(255) NOT NULL,
+	"email" varchar(255) NOT NULL UNIQUE,
 	"password" varchar(255) NOT NULL,
 	CONSTRAINT "users_pk" PRIMARY KEY ("id")
 ) WITH (
@@ -36,7 +36,21 @@ CREATE TABLE "sessions" (
   OIDS=FALSE
 );
 
+CREATE TABLE "logs" (
+	"id" serial NOT NULL,
+	"user_id" int NOT NULL,
+	"action" varchar(255) NOT NULL,
+	"date" TIMESTAMP NOT NULL,
+	"tool_id" int NOT NULL,
+	CONSTRAINT "logs_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
 
 ALTER TABLE "tool_tags" ADD CONSTRAINT "tool_tags_fk0" FOREIGN KEY ("tool_id") REFERENCES "tools"("id");
 
 ALTER TABLE "sessions" ADD CONSTRAINT "sessions_fk0" FOREIGN KEY ("user_id") REFERENCES "users"("id");
+
+ALTER TABLE "logs" ADD CONSTRAINT "logs_fk0" FOREIGN KEY ("user_id") REFERENCES "users"("id");
+ALTER TABLE "logs" ADD CONSTRAINT "logs_fk1" FOREIGN KEY ("tool_id") REFERENCES "tools"("id");

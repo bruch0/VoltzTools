@@ -15,10 +15,7 @@ runScripts $DATABASE;
 
 DATABASE=$(cat src/database_test);
 
-echo "Checando status do postgres..." &&
-checkPostgres &&
-
-echo "Criando banco de dados..." &&
+echo "Criando banco de dados de testes..." &&
 createDatabase $DATABASE &&
 
 echo "Executando scripts..." &&
