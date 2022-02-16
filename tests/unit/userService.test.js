@@ -110,7 +110,7 @@ describe('userService - joi validations', () => {
   });
 });
 
-describe('userService - joi validations', () => {
+describe('userService - email validation', () => {
   jest.spyOn(userRepository, 'newUser').mockImplementation(() => true);
   jest.spyOn(bcrypt, 'hashSync').mockImplementation(() => 'hashedPassword');
 
