@@ -1,3 +1,5 @@
+import translate from '@vitalets/google-translate-api';
+
 import * as toolRepository from '../repositories/toolsRepository.js';
 import * as logsRepository from '../repositories/logsRepository.js';
 
