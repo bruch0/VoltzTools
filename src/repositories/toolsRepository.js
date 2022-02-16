@@ -19,15 +19,19 @@ const getToolById = async ({ id }) => {
 };
 
 const createTool = async ({ title, link, description, tags }) => {
-  const tool = await connection.query(
-    'INSERT INTO tools (title, link, description) VALUES ($1, $2, $3) RETURNING *',
-    [title, link, description]
-  );
-
-  const toolId = tool.rows[0].id;
+  let toolId;
 
   try {
     await connection.query('BEGIN');
+
+    const tool = await connection.query(
+      'INSERT INTO tools (title, link, description) VALUES ($1, $2, $3) RETURNING *',
+      [title, link, description]
+    );
+
+    await connection.query('COMMIT');
+
+    toolId = tool.rows[0].id;
 
     tags.forEach(async (tag) => {
       await connection.query(
@@ -42,7 +46,7 @@ const createTool = async ({ title, link, description, tags }) => {
     throw new TagError();
   }
 
-  return tool.rows;
+  return toolId;
 };
 
 export { getAllTools, getToolById, createTool };
