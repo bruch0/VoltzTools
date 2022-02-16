@@ -42,6 +42,7 @@ const createTool = async ({ title, link, description, tags, userId }) => {
     description,
     tags,
   });
+
   await logsRepository.registerUserAction({ userId, toolId, action: 'Create' });
 
   return;
