@@ -6,4 +6,9 @@ const createUser = joi.object({
   password: joi.string().required().min(8).max(50),
 });
 
-export { createUser };
+const login = joi.object({
+  email: joi.string().required().email(),
+  password: joi.string().required().min(8).max(50),
+});
+
+export { createUser, login };
