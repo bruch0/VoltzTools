@@ -2,13 +2,16 @@ import faker from 'faker';
 import * as bcrypt from 'bcrypt';
 
 import * as userRepository from '../../src/repositories/userRepository.js';
+import * as sessionRepository from '../../src/repositories/sessionRepository.js';
 import * as userService from '../../src/services/userService.js';
 import BodyValidation from '../../src/errors/bodyValidation.js';
 import EmailAlreadyTaken from '../../src/errors/emailAlreadyTaken.js';
+import InexistentUser from '../../src/errors/inexistentUser.js';
+import IncorrectPassword from '../../src/errors/incorrectPassword.js';
 
-describe('userService - joi validations', () => {
+describe('userService - createUser - joi validations', () => {
   jest.spyOn(userRepository, 'newUser').mockImplementation(() => true);
-  jest.spyOn(bcrypt, 'hashSync').mockImplementation(() => 'hashedPassword');
+  jest.spyOn(bcrypt, 'hashSync').mockImplementationOnce(() => 'hashedPassword');
 
   it('should throw an error when empty body is sent', async () => {
     const promise = userService.newUser({});
@@ -110,14 +113,14 @@ describe('userService - joi validations', () => {
   });
 });
 
-describe('userService - email validation', () => {
-  jest.spyOn(userRepository, 'newUser').mockImplementation(() => true);
-  jest.spyOn(bcrypt, 'hashSync').mockImplementation(() => 'hashedPassword');
+describe('userService - createUser - email validation', () => {
+  jest.spyOn(userRepository, 'newUser').mockImplementationOnce(() => true);
+  jest.spyOn(bcrypt, 'hashSync').mockImplementationOnce(() => 'hashedPassword');
 
   it('should throw an error when email is already taken', async () => {
     jest
       .spyOn(userRepository, 'checkEmailAvailability')
-      .mockImplementation(() => false);
+      .mockImplementationOnce(() => false);
 
     const body = {
       name: faker.name.findName(),
@@ -144,5 +147,46 @@ describe('userService - email validation', () => {
     const promise = await userService.newUser(body);
 
     await expect(promise).toBe(undefined);
+  });
+});
+
+describe('userService - login ', () => {
+  jest
+    .spyOn(sessionRepository, 'registerUserSession')
+    .mockImplementationOnce(() => true);
+
+  it('should throw an error when email is not found', async () => {
+    jest
+      .spyOn(userRepository, 'findUser')
+      .mockImplementationOnce(() => undefined);
+
+    const body = {
+      email: faker.internet.email(),
+      password: faker.internet.password(),
+    };
+
+    const promise = userService.login(body);
+
+    await expect(promise).rejects.toThrow(InexistentUser);
+  });
+
+  it('should throw an error when password does not match', async () => {
+    jest.spyOn(userRepository, 'findUser').mockImplementationOnce(() => {
+      return {
+        id: faker.datatype.number(),
+        password: faker.internet.password(),
+      };
+    });
+
+    jest.spyOn(bcrypt, 'compareSync').mockImplementationOnce(() => false);
+
+    const body = {
+      email: faker.internet.email(),
+      password: faker.internet.password(),
+    };
+
+    const promise = userService.login(body);
+
+    await expect(promise).rejects.toThrow(IncorrectPassword);
   });
 });
