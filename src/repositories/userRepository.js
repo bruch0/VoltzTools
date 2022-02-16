@@ -17,4 +17,12 @@ const checkEmailAvailability = async ({ email }) => {
   return Boolean(!user.rows.length);
 };
 
-export { newUser, checkEmailAvailability };
+const findUser = async ({ email }) => {
+  const user = await connection.query('SELECT * FROM users WHERE email = $1', [
+    email,
+  ]);
+
+  return user.rows[0];
+};
+
+export { newUser, checkEmailAvailability, findUser };
