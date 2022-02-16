@@ -25,6 +25,7 @@ const createTool = async ({ title, link, description, tags }) => {
   );
 
   const toolId = tool.rows[0].id;
+
   try {
     await connection.query('BEGIN');
 
