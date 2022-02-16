@@ -35,7 +35,7 @@ const createTool = async (req, res, next) => {
     if (!title || !link || !description || !tags || !Array.isArray(tags))
       return res.status(400).send('Insira um corpo válido');
 
-    await toolsService.createTool({ title, link, description, tags });
+    await toolsService.createTool({ title, link, description, tags, userId });
 
     return res.status(201).send({ title, link, description, tags });
   } catch (error) {
