@@ -9,7 +9,7 @@ const router = new Router();
 
 router.group('/tools', (route) => {
   route.get('', toolsController.getAllTools);
-  route.get('/:id', toolsController.getToolById);
+  route.get('/:toolId', toolsController.getToolById);
 
   route.use(authJwt);
   route.post('', toolsController.createTool);
