@@ -2,18 +2,43 @@ import connection from '../database/database.js';
 import TagError from '../errors/tagError.js';
 
 const getAllTools = async () => {
-  const tools = await connection.query(
-    'SELECT * FROM tools JOIN tool_tags ON tools.id = tool_tags.tool_id'
+  const tools = await connection.query('SELECT * from tools');
+
+  const tags = await connection.query(
+    'SELECT id, tool_id as "toolId", tag from tool_tags'
   );
+
+  const hashMap = {};
+
+  tags.rows.forEach((tagObj) => {
+    const toolId = tagObj.toolId;
+    const tag = tagObj.tag;
+
+    hashMap[toolId] = hashMap[toolId] ? [...hashMap[toolId], tag] : [tag];
+  });
+
+  tools.rows.forEach((tool) => {
+    const toolId = tool.id;
+    tool.tags = hashMap[toolId];
+  });
 
   return tools.rows;
 };
 
 const getToolById = async ({ id }) => {
-  const tool = await connection.query(
-    'SELECT * FROM tools JOIN tool_tags ON tools.id = tool_tags.tool_id WHERE tools.id = $1',
+  const tool = await connection.query('SELECT * FROM tools WHERE id = $1', [
+    id,
+  ]);
+  tool.rows[0].tags = [];
+
+  const tags = await connection.query(
+    'SELECT * FROM tool_tags WHERE tool_id = $1',
     [id]
   );
+
+  tags.rows.forEach((tagObj) => tool.rows[0].tags.push(tagObj.tag));
+
+  console.log(tool.rows);
 
   return tool.rows;
 };
