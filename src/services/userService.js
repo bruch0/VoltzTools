@@ -1,6 +1,6 @@
 import translate from '@vitalets/google-translate-api';
 import bodyValidation from '../errors/bodyValidation.js';
-import { hashSync, compareSync } from 'bcrypt';
+import { hashSync } from 'bcrypt';
 
 import * as userRepository from '../repositories/userRepository.js';
 
@@ -11,10 +11,9 @@ const newUser = async ({ name, email, password }) => {
   const validation = userSchema.createUser.validate({ name, email, password });
 
   if (validation.error) {
-    await translate(validation.error.details[0].message, {
-      from: 'en',
-      to: 'pt',
-    }).then((res) => {
+    const errorMessage = validation.error.details[0].message;
+
+    await translate(errorMessage, { from: 'en', to: 'pt' }).then((res) => {
       throw new bodyValidation(res.text);
     });
   }
@@ -26,7 +25,7 @@ const newUser = async ({ name, email, password }) => {
 
   await userRepository.newUser({ name, email, hashPassword });
 
-  return 1;
+  return;
 };
 
 export { newUser };
