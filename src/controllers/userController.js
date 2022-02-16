@@ -21,4 +21,27 @@ const newUser = async (req, res, next) => {
   }
 };
 
-export { newUser };
+const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) return res.status(400).send('Corpo inválido');
+
+    const token = await userService.login({ email, password });
+
+    return res.send(token);
+  } catch (error) {
+    if (error.name === 'bodyValidation')
+      return res.status(400).send(error.message);
+
+    if (error.name === 'inexistentUser')
+      return res.status(404).send(error.message);
+
+    if (error.name === 'incorrectPassword')
+      return res.status(401).send(error.message);
+
+    next(error);
+  }
+};
+
+export { newUser, login };
