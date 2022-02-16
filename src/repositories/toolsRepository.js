@@ -1,4 +1,5 @@
 import connection from '../database/database.js';
+import TagError from '../errors/tagError.js';
 
 const getAllTools = async () => {
   const tools = await connection.query(
@@ -17,4 +18,32 @@ const getToolById = async ({ id }) => {
   return tool.rows;
 };
 
-export { getAllTools, getToolById };
+const createTool = async ({ title, link, description, tags }) => {
+  const tool = await connection.query(
+    'INSERT INTO tools (title, link, description) VALUES ($1, $2, $3) RETURNING *',
+    [title, link, description]
+  );
+
+  const toolId = tool.rows[0].id;
+  try {
+    await connection.query('BEGIN');
+    console.log(tags);
+    tags.forEach(async (tag) => {
+      console.log(tag);
+      await connection.query(
+        'INSERT INTO tool_tags (tool_id, tag) VALUES ($1, $2);',
+        [toolId, tag]
+      );
+
+      await connection.query('COMMIT');
+    });
+  } catch (error) {
+    console.log(error);
+    await connection.query('ROLLBACK');
+    throw new TagError();
+  }
+
+  return tool.rows;
+};
+
+export { getAllTools, getToolById, createTool };
