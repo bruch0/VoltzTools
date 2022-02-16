@@ -42,6 +42,8 @@ const createTool = async (req, res, next) => {
     if (error.name === 'bodyValidation')
       return res.status(400).send(error.message);
 
+    if (error.name === 'tagError') return res.status(500).send(error.message);
+
     next(error);
   }
 };
