@@ -1,4 +1,5 @@
 import * as toolRepository from '../repositories/toolsRepository.js';
+import * as logsRepository from '../repositories/logsRepository.js';
 
 import * as toolSchema from '../validations/toolSchema.js';
 
@@ -19,7 +20,7 @@ const getToolById = async ({ id }) => {
   return tool;
 };
 
-const createTool = async ({ title, link, description, tags }) => {
+const createTool = async ({ title, link, description, tags, userId }) => {
   const validation = toolSchema.createTool.validate({
     title,
     link,
@@ -35,7 +36,13 @@ const createTool = async ({ title, link, description, tags }) => {
     });
   }
 
-  await toolRepository.createTool({ title, link, description, tags });
+  const toolId = await toolRepository.createTool({
+    title,
+    link,
+    description,
+    tags,
+  });
+  await logsRepository.registerUserAction({ userId, toolId, action: 'Create' });
 
   return;
 };
