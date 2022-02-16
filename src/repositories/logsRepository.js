@@ -11,4 +11,10 @@ const registerUserAction = async ({ userId, toolId, action }) => {
   return;
 };
 
-export { registerUserAction };
+const getLogs = async () => {
+  const logs = await connection.query('SELECT * FROM logs');
+
+  return logs.rows;
+};
+
+export { registerUserAction, getLogs };

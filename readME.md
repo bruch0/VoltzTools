@@ -91,6 +91,63 @@ Group of all tools-related resources.
   'Essa ferramenta não existe';
   ```
 
+### Create a Tool [POST]
+
+- Headers
+
+	```js
+    {
+		authorization: `Bearer ${token}`
+	}
+	```
+		
+- Attributes (object)
+
+  - title: string
+  - description: string
+  - link: string
+  - tags: array
+
+- Request (application/json)
+
+- Response 201 (application/json)
+
+  ```js
+  201;
+  ```
+
+- Response 401 (application/json)
+  ```js
+  'Unauthorized'
+  ```
+
+### Delete a Tool [POST]
+
+- Headers
+
+	```js
+    {
+		authorization: `Bearer ${token}`
+	}
+	```
+
+- Parameters
+
+  - id: 1 (number) - An unique identifier of the message.
+
+- Request (application/json)
+
+- Response 201 (application/json)
+
+  ```js
+  200;
+  ```
+
+- Response 401 (application/json)
+  ```js
+  'Unauthorized'
+  ```
+
 # Group User
 
 Group of all user-related resources.
@@ -108,7 +165,7 @@ Group of all user-related resources.
 - Response 201 (application/json)
 
   ```js
-  201;
+  201
   ```
 
 - Response 409 (application/json)
@@ -140,8 +197,8 @@ Group of all user-related resources.
   'Senha incorreta';
   ```
 
-Response 404 (application/json)
+- Response 404 (application/json)
 
-```js
-'Não existe nenhum usuário com este email';
-```
+	```js
+	'Não existe nenhum usuário com este email';
+	```
