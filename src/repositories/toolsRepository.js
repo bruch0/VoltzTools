@@ -27,9 +27,8 @@ const createTool = async ({ title, link, description, tags }) => {
   const toolId = tool.rows[0].id;
   try {
     await connection.query('BEGIN');
-    console.log(tags);
+
     tags.forEach(async (tag) => {
-      console.log(tag);
       await connection.query(
         'INSERT INTO tool_tags (tool_id, tag) VALUES ($1, $2);',
         [toolId, tag]
@@ -38,7 +37,6 @@ const createTool = async ({ title, link, description, tags }) => {
       await connection.query('COMMIT');
     });
   } catch (error) {
-    console.log(error);
     await connection.query('ROLLBACK');
     throw new TagError();
   }
