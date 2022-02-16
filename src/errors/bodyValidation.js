@@ -1,8 +1,8 @@
-class bodyValidation extends Error {
+class BodyValidation extends Error {
   constructor(message) {
     super(message);
     this.name = 'bodyValidation';
   }
 }
 
-export default bodyValidation;
+export default BodyValidation;
