@@ -1,9 +1,11 @@
 import supertest from 'supertest';
+import faker from 'faker';
 
 import '../../src/setup.js';
 import app from '../../src/app.js';
 
 import { createTool } from '../factories/toolFactory.js';
+import { createToken } from '../factories/tokenFactory.js';
 
 const request = supertest(app);
 
@@ -40,5 +42,48 @@ describe('GET /tools/:toolId', () => {
     const result = await request.get(`/tools/${id}`);
 
     expect(Array.isArray(result.body)).toBe(true);
+  });
+});
+
+describe('POST /tools', () => {
+  it('should return status 401 when authorization header is not sent', async () => {
+    const result = await request.post('/tools');
+
+    expect(result.status).toEqual(401);
+  });
+
+  it('should return status 401 when authorization header is invalid', async () => {
+    const result = await request
+      .post('/tools')
+      .set('authorization', faker.datatype.string());
+
+    expect(result.status).toEqual(401);
+  });
+
+  it('should return status 400 when sending invalid body, but authorization is ok', async () => {
+    const token = await createToken();
+    const result = await request
+      .post('/tools')
+      .set('authorization', `Bearer ${token}`);
+
+    expect(result.status).toEqual(400);
+  });
+
+  it('should return status 201 when successfully creates a tool', async () => {
+    const token = await createToken();
+
+    const body = {
+      title: faker.company.companyName(),
+      link: faker.internet.url(),
+      description: faker.lorem.words(),
+      tags: faker.datatype.array(faker.datatype.number(10)),
+    };
+
+    const result = await request
+      .post('/tools')
+      .set('authorization', `Bearer ${token}`)
+      .send(body);
+
+    expect(result.status).toEqual(201);
   });
 });
