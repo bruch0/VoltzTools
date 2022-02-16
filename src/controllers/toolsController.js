@@ -12,11 +12,11 @@ const getAllTools = async (req, res, next) => {
 
 const getToolById = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const { toolId } = req.params;
 
-    if (isNaN(id)) return res.status(400).send('Insira um id válido');
+    if (isNaN(toolId)) return res.status(400).send('Insira um id válido');
 
-    const tool = await toolsService.getToolById({ id });
+    const tool = await toolsService.getToolById({ toolId });
 
     return res.send(tool);
   } catch (error) {
@@ -48,4 +48,20 @@ const createTool = async (req, res, next) => {
   }
 };
 
-export { getAllTools, getToolById, createTool };
+const deleteTool = async (req, res, next) => {
+  try {
+    const { toolId } = req.params;
+    const { userId } = req.locals;
+
+    await toolsService.deleteTool({ toolId, userId });
+
+    return res.status(200).send({});
+  } catch (error) {
+    if (error.name === 'inexistentTool')
+      return res.status(404).send(error.message);
+
+    next(error);
+  }
+};
+
+export { getAllTools, getToolById, createTool, deleteTool };
