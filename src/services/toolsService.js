@@ -14,8 +14,8 @@ const getAllTools = async () => {
   return tools;
 };
 
-const getToolById = async ({ id }) => {
-  const tool = await toolRepository.getToolById({ id });
+const getToolById = async ({ toolId }) => {
+  const tool = await toolRepository.getToolById({ toolId });
 
   if (!tool.length) throw new InexistentTool();
 
@@ -50,4 +50,15 @@ const createTool = async ({ title, link, description, tags, userId }) => {
   return;
 };
 
-export { getAllTools, getToolById, createTool };
+const deleteTool = async ({ toolId, userId }) => {
+  const tool = await toolRepository.getToolById({ toolId });
+  if (!tool) throw new InexistentTool();
+
+  await toolRepository.deleteTool({ toolId });
+
+  await logsRepository.registerUserAction({ userId, toolId, action: 'Delete' });
+
+  return;
+};
+
+export { getAllTools, getToolById, createTool, deleteTool };
