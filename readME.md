@@ -56,6 +56,36 @@ Group of all tools-related resources.
   ]
   ```
 
+## Create a Tool [POST]
+
+- Headers
+
+  ```js
+  {
+    authorization: `Bearer ${token}`;
+  }
+  ```
+
+- Attributes (object)
+
+  - title: string
+  - description: string
+  - link: string
+  - tags: array
+
+- Request (application/json)
+
+- Response 201 (application/json)
+
+  ```js
+  201
+  ```
+
+- Response 401 (application/json)
+  ```js
+  'Unauthorized'
+  ```
+
 ## One Tool [/tools/{id}]
 
 - Parameters
@@ -91,45 +121,15 @@ Group of all tools-related resources.
   'Essa ferramenta não existe';
   ```
 
-### Create a Tool [POST]
+### Delete a Tool [DELETE]
 
 - Headers
 
-	```js
-    {
-		authorization: `Bearer ${token}`
-	}
-	```
-		
-- Attributes (object)
-
-  - title: string
-  - description: string
-  - link: string
-  - tags: array
-
-- Request (application/json)
-
-- Response 201 (application/json)
-
   ```js
-  201;
+  {
+    authorization: `Bearer ${token}`;
+  }
   ```
-
-- Response 401 (application/json)
-  ```js
-  'Unauthorized'
-  ```
-
-### Delete a Tool [POST]
-
-- Headers
-
-	```js
-    {
-		authorization: `Bearer ${token}`
-	}
-	```
 
 - Parameters
 
@@ -140,7 +140,7 @@ Group of all tools-related resources.
 - Response 201 (application/json)
 
   ```js
-  200;
+  200
   ```
 
 - Response 401 (application/json)
@@ -171,7 +171,7 @@ Group of all user-related resources.
 - Response 409 (application/json)
 
   ```js
-  'Esse email já está sendo usado';
+  'Esse email já está sendo usado'
   ```
 
 ### Login [POST]
@@ -194,11 +194,92 @@ Group of all user-related resources.
 - Response 401 (application/json)
 
   ```js
-  'Senha incorreta';
+  'Senha incorreta'
   ```
 
 - Response 404 (application/json)
 
-	```js
-	'Não existe nenhum usuário com este email';
-	```
+  ```js
+  'Não existe nenhum usuário com este email'
+  ```
+
+# Group Logs
+
+Group of all logs-related resources.
+
+### Get all the Logs [GET]
+
+- Headers
+
+  ```js
+  {
+    authorization: `Bearer ${token}`
+  }
+  ```
+
+- Request (application/json)
+
+- Response 200 (application/json)
+
+  ```js
+  [
+    {
+      action: 'Create',
+      date: '2022-02-17T00:49:20.063Z',
+      user: {
+        name: 'Roberto',
+        id: 1,
+      },
+      tool: {
+        name: 'Spotify',
+        id: 1,
+      },
+    },
+    {
+      action: 'Create',
+      date: '2022-02-17T00:50:40.242Z',
+      user: {
+        name: 'Cláudio',
+        id: 2,
+      },
+      tool: {
+        name: 'Notion',
+        id: 2,
+      },
+    },
+  ];
+  ```
+
+- Response 401 (application/json)
+  ```js
+  'Unauthorized'
+  ```
+
+## Logs from one user [/logs/{id}]
+
+- Parameters
+
+  - id: 1 (number) - An unique identifier of the message.
+
+### Retrieve the Logs [GET]
+
+- Response 200 (application/json)
+
+  ```js
+  [
+    {
+      action: 'Create',
+      date: '2022-02-17T00:49:20.063Z',
+      user: 'Rober',
+      tool: {
+        name: 'Spotify',
+        id: 1,
+      },
+    },
+  ];
+  ```
+
+- Response 401 (application/json)
+  ```js
+  'Unauthorized'
+  ```
