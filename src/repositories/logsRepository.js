@@ -28,4 +28,22 @@ const getLogs = async () => {
   return logs.rows;
 };
 
-export { registerUserAction, getLogs };
+const getLogsByUserId = async ({ userId }) => {
+  const logs = await connection.query(
+    `SELECT 
+		logs.action as action,
+		logs.tool_id as "toolId",
+		logs.date as date,
+		users.name as user,
+		tools.title as "toolName"
+			FROM logs
+				JOIN users ON logs.user_id = users.id
+				JOIN tools ON logs.tool_id = tools.id
+					WHERE logs.user_id = $1`,
+    [userId]
+  );
+
+  return logs.rows;
+};
+
+export { registerUserAction, getLogs, getLogsByUserId };
