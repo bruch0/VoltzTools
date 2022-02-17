@@ -41,7 +41,7 @@ describe('GET /tools/:toolId', () => {
     const id = await createTool();
     const result = await request.get(`/tools/${id}`);
 
-    expect(Array.isArray(result.body)).toBe(true);
+    expect(typeof result.body).toBe('object');
   });
 });
 
