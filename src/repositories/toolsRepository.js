@@ -29,6 +29,8 @@ const getToolById = async ({ toolId }) => {
   const tool = await connection.query('SELECT * FROM tools WHERE id = $1', [
     toolId,
   ]);
+  if (!tool.rowCount) return false;
+
   tool.rows[0].tags = [];
 
   const tags = await connection.query(
