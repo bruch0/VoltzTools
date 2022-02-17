@@ -1,285 +1,67 @@
-# Voltz Tools API
-
-# Group Tools
-
-Group of all tools-related resources.
-
-## All Tools [/tools]
-
-### Retrieve all Tools [GET]
-
-- Response 200 (application/json)
-
-  ```js
-  [
-    {
-  	id: 1,
-  	title: "Notion",
-  	link: "https://notion.so",
-  	description: "All in one tool to organize teams and ideas. Write, plan, collaborate, and get organized. ",
-  	tags: [
-  		"organization",
-  		"planning",
-  		"collaboration",
-  		"writing",
-  		"calendar"
-  	]
-    },
-    {
-  	id: 2,
-  	title: "json-server",
-  	link: "https://github.com/typicode/json-server",
-  	description: "Fake REST API based on a json schema. Useful for mocking and creating APIs for front-end devs to consume in coding chars"
-  	tags: [
-  		"api",
-  		"json",
-  		"schema",
-  		"node",
-  		"github",
-  		"rest"
-  	]
-    },
-    {
-  	id: 3,
-  	title: "fastify",
-  	link: "https://www.fastify.io/",
-  	description: "Extremely fast and simple, low-overhead web framework for NodeJS. Supports       HTTP2.",
-  	tags: [
-  		"web",
-  		"framework",
-  		"node",
-  		"http2",
-  		"https",
-  		"localhost"
-  	]
-    }
-  ]
-  ```
-
-## Create a Tool [POST]
-
-- Headers
-
-  ```js
-  {
-    authorization: `Bearer ${token}`;
-  }
-  ```
-
-- Attributes (object)
-
-  - title: string
-  - description: string
-  - link: string
-  - tags: array
-
-- Request (application/json)
-
-- Response 201 (application/json)
-
-  ```js
-  201
-  ```
-
-- Response 401 (application/json)
-  ```js
-  'Unauthorized'
-  ```
+# Voltz Tools 🛠️
 
-## One Tool [/tools/{id}]
+</br>
 
-- Parameters
+## About ❔
 
-  - id: 1 (number) - An unique identifier of the message.
+Voltz Tools is a company focused API to share usefull tools for the employees
 
-### Retrieve a Tool [GET]
+</br>
 
-- Response 200 (application/json)
+## Features
 
-  ```js
-  [
-    {
-      id: 1,
-      title: 'Notion',
-      link: 'https://notion.so',
-      description:
-        'All in one tool to organize teams and ideas. Write, plan, collaborate, and get organized. ',
-      tags: [
-        'organization',
-        'planning',
-        'collaboration',
-        'writing',
-        'calendar',
-      ],
-    },
-  ];
-  ```
+- [x] Get all the tools
+- [x] Get a tool by it's unique id
+- [x] Sign in in the API
+- [x] Log in the API and receive a token valid for 24 hours
+- [x] Create a new tool (token needed)
+- [x] Delete a tool (token needed)
+- [x] Get all the logs (token needed)
+- [x] Get all the logs from an user by it's unique id (token needed)
+- [x] All the actions (Create and Delete) are registered in the logs
 
-- Response 404 (application/json)
+</br>
 
-  ```js
-  'Essa ferramenta não existe';
-  ```
+## Required technologies
 
-### Delete a Tool [DELETE]
+- Node (16.14.0)
 
-- Headers
+  - <a href="https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-20-04-pt" target="_blank">Click here if you need to install Node (follow option 1)</a>
+  - To change Node version run "nvm use 16.14.0"
 
-  ```js
-  {
-    authorization: `Bearer ${token}`;
-  }
-  ```
+- Postgres
+  - <a href="https://www.hostinger.com.br/tutoriais/instalar-postgresql-ubuntu" target="_blank">Click here if you need to install Postgres (first two commands)</a>
 
-- Parameters
+</br>
 
-  - id: 1 (number) - An unique identifier of the message.
+## How to run
 
-- Request (application/json)
+### Clone this repository
 
-- Response 201 (application/json)
+```bash
+git clone https://github.com/bruch0/VoltzTools.git
+```
 
-  ```js
-  200
-  ```
+### Access the project folder cmd/terminal
 
-- Response 401 (application/json)
-  ```js
-  'Unauthorized'
-  ```
+```bash
+cd VoltzTools
+```
 
-# Group User
+### Write your PosgreSQL password in the appSetup file, line 7
 
-Group of all user-related resources.
+```bash
+POSTGRESQLPASSWORD=your_password_goes_here
 
-### Create an Account [POST]
+If you white it incorrectly, the tests will fail and some features will not work
+```
 
-- Attributes (object)
+### Run the setup
 
-  - name: string
-  - email: string
-  - password: string
+```bash
+bash ./appSetup
+```
 
-- Request (application/json)
-
-- Response 201 (application/json)
-
-  ```js
-  201
-  ```
-
-- Response 409 (application/json)
-
-  ```js
-  'Esse email já está sendo usado'
-  ```
-
-### Login [POST]
-
-- Attributes (object)
-
-  - email: string
-  - password: string
-
-- Request (application/json)
-
-- Response 200 (application/json)
-
-  ```js
-  {
-    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NDUwMjk5MTQsImV4cCI6MTY0NTExNjMxNH0.4ZAJypnPLZ3f4Z3raWUvWQZVlCu8ADIstkIweeN9Gxo';
-  }
-  ```
-
-- Response 401 (application/json)
-
-  ```js
-  'Senha incorreta'
-  ```
-
-- Response 404 (application/json)
-
-  ```js
-  'Não existe nenhum usuário com este email'
-  ```
-
-# Group Logs
-
-Group of all logs-related resources.
-
-### Get all the Logs [GET]
-
-- Headers
-
-  ```js
-  {
-    authorization: `Bearer ${token}`
-  }
-  ```
-
-- Request (application/json)
-
-- Response 200 (application/json)
-
-  ```js
-  [
-    {
-      action: 'Create',
-      date: '2022-02-17T00:49:20.063Z',
-      user: {
-        name: 'Roberto',
-        id: 1,
-      },
-      tool: {
-        name: 'Spotify',
-        id: 1,
-      },
-    },
-    {
-      action: 'Create',
-      date: '2022-02-17T00:50:40.242Z',
-      user: {
-        name: 'Cláudio',
-        id: 2,
-      },
-      tool: {
-        name: 'Notion',
-        id: 2,
-      },
-    },
-  ];
-  ```
-
-- Response 401 (application/json)
-  ```js
-  'Unauthorized'
-  ```
-
-## Logs from one user [/logs/{id}]
-
-- Parameters
-
-  - id: 1 (number) - An unique identifier of the message.
-
-### Retrieve the Logs [GET]
-
-- Response 200 (application/json)
-
-  ```js
-  [
-    {
-      action: 'Create',
-      date: '2022-02-17T00:49:20.063Z',
-      user: 'Rober',
-      tool: {
-        name: 'Spotify',
-        id: 1,
-      },
-    },
-  ];
-  ```
-
-- Response 401 (application/json)
-  ```js
-  'Unauthorized'
-  ```
+The command above will create the databases, install dependencies, run tests and coverage
+<br>
+After that, the app will start at localhost:3000
