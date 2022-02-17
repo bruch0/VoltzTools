@@ -31,8 +31,12 @@ const getAllTools = async () => {
 
 const getToolById = async ({ toolId }) => {
   const tool = await toolRepository.getToolById({ toolId });
+  if (!tool) throw new InexistentTool();
 
-  if (!tool.length) throw new InexistentTool();
+  const tags = await toolRepository.getTagsById({ toolId });
+
+  tool.tags = [];
+  tags.forEach((tagObj) => tool.tags.push(tagObj.tag));
 
   return tool;
 };

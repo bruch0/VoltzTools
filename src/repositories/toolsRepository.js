@@ -21,16 +21,16 @@ const getToolById = async ({ toolId }) => {
   ]);
   if (!tool.rowCount) return false;
 
-  tool.rows[0].tags = [];
+  return tool.rows[0];
+};
 
+const getTagsById = async ({ toolId }) => {
   const tags = await connection.query(
     'SELECT * FROM tool_tags WHERE tool_id = $1',
     [toolId]
   );
 
-  tags.rows.forEach((tagObj) => tool.rows[0].tags.push(tagObj.tag));
-
-  return tool.rows;
+  return tags.rows;
 };
 
 const createTool = async ({ title, link, description, tags }) => {
@@ -68,4 +68,11 @@ const deleteTool = async ({ toolId }) => {
   await connection.query('DELETE FROM tools WHERE id = $1', [toolId]);
 };
 
-export { getAllTools, getAllTags, getToolById, createTool, deleteTool };
+export {
+  getAllTools,
+  getAllTags,
+  getToolById,
+  getTagsById,
+  createTool,
+  deleteTool,
+};
