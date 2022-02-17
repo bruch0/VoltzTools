@@ -42,10 +42,16 @@ Voltz Tools is a company focused API to share usefull tools for the employees
 git clone https://github.com/bruch0/VoltzTools.git
 ```
 
-### Access the project folder cmd/terminal
+### Access the project folder on cmd/terminal
 
 ```bash
 cd VoltzTools
+```
+
+### Open it in your favotire IDE
+
+```bash
+code .
 ```
 
 ### Write your PosgreSQL password in the appSetup file, line 7
