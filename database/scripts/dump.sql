@@ -48,9 +48,8 @@ CREATE TABLE "logs" (
 );
 
 
-ALTER TABLE "tool_tags" ADD CONSTRAINT "tool_tags_fk0" FOREIGN KEY ("tool_id") REFERENCES "tools"("id");
+ALTER TABLE "tool_tags" ADD CONSTRAINT "tool_tags_fk0" FOREIGN KEY ("tool_id") REFERENCES "tools"("id") ON DELETE CASCADE;
 
 ALTER TABLE "sessions" ADD CONSTRAINT "sessions_fk0" FOREIGN KEY ("user_id") REFERENCES "users"("id");
 
 ALTER TABLE "logs" ADD CONSTRAINT "logs_fk0" FOREIGN KEY ("user_id") REFERENCES "users"("id");
-ALTER TABLE "logs" ADD CONSTRAINT "logs_fk1" FOREIGN KEY ("tool_id") REFERENCES "tools"("id");
