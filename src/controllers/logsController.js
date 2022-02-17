@@ -10,4 +10,18 @@ const getLogs = async (req, res, next) => {
   }
 };
 
-export { getLogs };
+const getLogsByUserId = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    if (!userId) return res.sendStatus(400);
+
+    const logs = await logsService.getLogsByUserId({ userId });
+
+    return res.status(200).send(logs);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+export { getLogs, getLogsByUserId };
