@@ -10,6 +10,7 @@ const router = new Router();
 router.group('/logs', (route) => {
   route.use(authJWT);
   route.get('', logsController.getLogs);
+  route.get('/:userId', logsController.getLogsByUserId);
 });
 
 export default router;
