@@ -24,5 +24,4 @@ echo 'JWT_SECRET=[e^s4zA7U3wF:1(YpjPQaivS\\ns!BI(fN{H1*{)({U3C+`.XbbD<0!-43xIATH
 
 npm i
 npm run test:coverage
-npm run test
 npm run dev
