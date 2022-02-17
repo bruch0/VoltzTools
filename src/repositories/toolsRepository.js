@@ -4,25 +4,15 @@ import TagError from '../errors/tagError.js';
 const getAllTools = async () => {
   const tools = await connection.query('SELECT * from tools');
 
+  return tools.rows;
+};
+
+const getAllTags = async () => {
   const tags = await connection.query(
     'SELECT id, tool_id as "toolId", tag from tool_tags'
   );
 
-  const hashMap = {};
-
-  tags.rows.forEach((tagObj) => {
-    const toolId = tagObj.toolId;
-    const tag = tagObj.tag;
-
-    hashMap[toolId] = hashMap[toolId] ? [...hashMap[toolId], tag] : [tag];
-  });
-
-  tools.rows.forEach((tool) => {
-    const toolId = tool.id;
-    tool.tags = hashMap[toolId];
-  });
-
-  return tools.rows;
+  return tags.rows;
 };
 
 const getToolById = async ({ toolId }) => {
@@ -78,4 +68,4 @@ const deleteTool = async ({ toolId }) => {
   await connection.query('DELETE FROM tools WHERE id = $1', [toolId]);
 };
 
-export { getAllTools, getToolById, createTool, deleteTool };
+export { getAllTools, getAllTags, getToolById, createTool, deleteTool };

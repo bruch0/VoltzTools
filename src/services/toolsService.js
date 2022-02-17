@@ -10,6 +10,21 @@ import BodyValidation from '../errors/bodyValidation.js';
 
 const getAllTools = async () => {
   const tools = await toolRepository.getAllTools();
+  const tags = await toolRepository.getAllTags();
+
+  const hashMap = {};
+
+  tags.forEach((tagObj) => {
+    const toolId = tagObj.toolId;
+    const tag = tagObj.tag;
+
+    hashMap[toolId] = hashMap[toolId] ? [...hashMap[toolId], tag] : [tag];
+  });
+
+  tools.forEach((tool) => {
+    const toolId = tool.id;
+    tool.tags = hashMap[toolId];
+  });
 
   return tools;
 };
