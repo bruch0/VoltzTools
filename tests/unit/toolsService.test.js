@@ -179,3 +179,35 @@ describe('toolService - create a new tool', () => {
     await expect(promise).rejects.toThrow(BodyValidation);
   });
 });
+
+describe('toolService - delete a tool', () => {
+  jest
+    .spyOn(logsRepository, 'registerUserAction')
+    .mockImplementation(() => true);
+
+  it('should throw an error when the id is not found', async () => {
+    const id = faker.datatype.number();
+    jest
+      .spyOn(toolsRepository, 'getToolById')
+      .mockImplementationOnce(() => false);
+
+    const promise = toolsService.deleteTool({ id });
+
+    await expect(promise).rejects.toThrow(InexistentTool);
+  });
+
+  it('should return undefined when the tool exists', async () => {
+    const id = faker.datatype.number();
+    jest
+      .spyOn(toolsRepository, 'getToolById')
+      .mockImplementationOnce(() => [faker.datatype.number()]);
+
+    jest
+      .spyOn(toolsRepository, 'deleteTool')
+      .mockImplementationOnce(() => true);
+
+    const result = await toolsService.deleteTool({ id });
+
+    await expect(result).toBe(undefined);
+  });
+});
