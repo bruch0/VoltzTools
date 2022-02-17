@@ -16,4 +16,17 @@ const getLogs = async () => {
   return logs;
 };
 
-export { getLogs };
+const getLogsByUserId = async ({ userId }) => {
+  const logs = await logsRepository.getLogsByUserId({ userId });
+
+  logs.forEach((log) => {
+    log.tool = { name: log.toolName, id: log.toolId };
+
+    delete log.toolName;
+    delete log.toolId;
+  });
+
+  return logs;
+};
+
+export { getLogs, getLogsByUserId };
