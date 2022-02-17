@@ -43,3 +43,43 @@ describe('GET /logs', () => {
     expect(Array.isArray(result.body)).toBe(true);
   });
 });
+
+describe('GET /logs/:userId', () => {
+  it('should return status 401 when authorization header is not sent', async () => {
+    const randomId = faker.datatype.number();
+    const result = await request.get(`/logs/${randomId}`);
+
+    expect(result.status).toEqual(401);
+  });
+
+  it('should return status 401 when authorization header is invalid', async () => {
+    const randomId = faker.datatype.number();
+    const result = await request
+      .get(`/logs/${randomId}`)
+      .set('authorization', faker.datatype.string());
+
+    expect(result.status).toEqual(401);
+  });
+
+  it('should return status 200 when successfully gets the user logs', async () => {
+    const randomId = faker.datatype.number();
+    const token = await createToken();
+
+    const result = await request
+      .get(`/logs/${randomId}`)
+      .set('authorization', `Bearer ${token}`);
+
+    expect(result.status).toEqual(200);
+  });
+
+  it('should return an array with the logs', async () => {
+    const randomId = faker.datatype.number();
+    const token = await createToken();
+
+    const result = await request
+      .get(`/logs/${randomId}`)
+      .set('authorization', `Bearer ${token}`);
+
+    expect(Array.isArray(result.body)).toBe(true);
+  });
+});
