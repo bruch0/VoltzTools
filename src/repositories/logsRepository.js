@@ -12,7 +12,18 @@ const registerUserAction = async ({ userId, toolId, action }) => {
 };
 
 const getLogs = async () => {
-  const logs = await connection.query('SELECT * FROM logs');
+  const logs = await connection.query(
+    `SELECT 
+		logs.action as action,
+		logs.tool_id as "toolId",
+		logs.date as date,
+		logs.user_id as "userId",
+		users.name as name,
+		tools.title as "toolName"
+			FROM logs
+				JOIN users ON logs.user_id = users.id
+				JOIN tools ON logs.tool_id = tools.id`
+  );
 
   return logs.rows;
 };
