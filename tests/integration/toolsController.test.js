@@ -87,3 +87,46 @@ describe('POST /tools', () => {
     expect(result.status).toEqual(201);
   });
 });
+
+describe('DELETE /tools/:toolId', () => {
+  it('should return status 401 when authorization header is not sent', async () => {
+    const randomId = faker.datatype.number();
+
+    const result = await request.delete(`/tools/${randomId}`);
+
+    expect(result.status).toEqual(401);
+  });
+
+  it('should return status 401 when authorization header is invalid', async () => {
+    const randomId = faker.datatype.number();
+
+    const result = await request
+      .delete(`/tools/${randomId}`)
+      .set('authorization', faker.datatype.string());
+
+    expect(result.status).toEqual(401);
+  });
+
+  it('should return status 404 when the tool does not exist', async () => {
+    const randomId = faker.datatype.number();
+    const token = await createToken();
+
+    const result = await request
+      .delete(`/tools/${randomId}`)
+      .set('authorization', `Bearer ${token}`);
+
+    expect(result.status).toEqual(404);
+  });
+
+  it('should return status 200 when successfully deletes a tool', async () => {
+    const toolId = await createTool();
+
+    const token = await createToken();
+
+    const result = await request
+      .delete(`/tools/${toolId}`)
+      .set('authorization', `Bearer ${token}`);
+
+    expect(result.status).toEqual(200);
+  });
+});
