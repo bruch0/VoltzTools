@@ -1,0 +1,24 @@
+cd database
+bash ./create-database
+cd ..
+
+echo 'DB_USER=postgres' >> .env.dev
+echo 'DB_PASSWORD=123456' >> .env.dev
+echo 'DB_PORT=5432' >> .env.dev
+echo 'DB_HOST=localhost' >> .env.dev
+echo 'DB_DATABASE=voltz_tools' >> .env.dev
+echo 'PORT=3000' >> .env.dev
+echo 'JWT_SECRET=[e^s4zA7U3wF:1(YpjPQaivS\\ns!BI(fN{H1*{)({U3C+`.XbbD<0!-43xIATHxk0)dgZnTcSTfsRSwuxEdz05O(T_wvqz^VlfeY' >> .env.dev
+
+echo 'DB_USER=postgres' >> .env.test
+echo 'DB_PASSWORD=123456' >> .env.test
+echo 'DB_PORT=5432' >> .env.test
+echo 'DB_HOST=localhost' >> .env.test
+echo 'DB_DATABASE=voltz_tools_test' >> .env.test
+echo 'PORT=3000' >> .env.test
+echo 'JWT_SECRET=[e^s4zA7U3wF:1(YpjPQaivS\\ns!BI(fN{H1*{)({U3C+`.XbbD<0!-43xIATHxk0)dgZnTcSTfsRSwuxEdz05O(T_wvqz^VlfeY' >> .env.test
+
+npm i
+npm run test:coverage
+npm run test
+npm run dev
