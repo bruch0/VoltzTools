@@ -4,7 +4,7 @@ cd database
 bash ./create-database
 cd ..
 
-POSTGRESQLPASSWORD=
+POSTGRESQLPASSWORD=123456
 
 echo 'DB_USER=postgres' >> .env.dev
 echo DB_PASSWORD=$POSTGRESQLPASSWORD >> .env.dev
